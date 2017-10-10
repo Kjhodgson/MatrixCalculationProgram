@@ -6,14 +6,14 @@ namespace MatrixCalculationProgram
 {
     class Program
     {
-        private static int numRows = 200;
-        private static int numCols = 200;
+        private static int numRows = 800;
+        private static int numCols = 800;
         static int numberOfCores = Environment.ProcessorCount;
 
         static void Main(string[] args)
         {
             Console.WriteLine("This program will run a matrix calculations on a single 2-dimensional array.\n");
-            Console.WriteLine("This is the Matrix to be calculated.");
+            Console.WriteLine("This is the Matrix to be calculated:");
 
             int[,] array = new int[numRows, numCols];
             int[,] copiedArray1 = (int[,])array.Clone();
@@ -30,24 +30,24 @@ namespace MatrixCalculationProgram
                 for (int j = 0; j < numCols; j++)
                 {
                     array[i, j] = rand.Next(1, 3);
-                    Console.Write(string.Format("{0} ", array[i, j]));
                 }
-                Console.Write("\n");
             }
+            PrintArray(array);
+            
+            Console.WriteLine("\nNow running the matrix calculation without parallelism....");
             sw.Start();
-            Console.WriteLine("Now running the matrix calculation without parallelism....");
-
             copiedArray1 = (int[,])MatrixCalculationProgram(array, copiedArray1).Clone();
             sw.Stop();
+            PrintArray(copiedArray1);
             Console.WriteLine("\nThe calculation took {0} (ms)", sw.ElapsedMilliseconds);
             decimal timeSeconds = decimal.Divide((decimal)sw.ElapsedMilliseconds, (decimal)1000);
             Console.WriteLine("Time in seconds: {0}", timeSeconds);
-
-            sw.Start();
+           
             Console.WriteLine("\nNow running the matrix calculation with parallelism....");
-
+            sw.Start();
             copiedArray2 = (int[,])MatrixCalculationParallelProgram(array,copiedArray2).Clone();
             sw.Stop();
+            PrintArray(copiedArray2);
             Console.WriteLine("\nThe calculation took {0} (ms)", sw.ElapsedMilliseconds);
             timeSeconds = decimal.Divide((decimal)sw.ElapsedMilliseconds, (decimal)1000);
             Console.WriteLine("Time in seconds: {0}", timeSeconds);
@@ -58,7 +58,6 @@ namespace MatrixCalculationProgram
 
             Console.WriteLine("\nThe program is done, please press a key to exit!");
             Console.ReadKey();
-
         }
 
 
@@ -82,13 +81,10 @@ namespace MatrixCalculationProgram
                     {
                         sumCol += array[i, l];
                     }
-                    copiedArray1[i, j] = sumCol * sumRow;
-                    Console.Write(string.Format("{0} ", copiedArray1[i, j]));                   
+                    copiedArray1[i, j] = sumCol * sumRow;             
                 }
-                Console.Write("\n");
             }
-            return (copiedArray1);
-            
+            return (copiedArray1);            
         }
 
         private static int[,] MatrixCalculationParallelProgram(int[,] array, int[,] copiedArray2)
@@ -137,16 +133,6 @@ namespace MatrixCalculationProgram
                 });               
             }
             Task.WaitAll(tasks);
-            Console.Write("\n");
-            //prints the array after completion of tasks
-            for (int i = 0; i < numRows; i++)
-            {
-                for (int j = 0; j < numCols; j++)
-                {
-                    Console.Write(string.Format("{0} ", copiedArray2[i, j]));
-                }
-                Console.Write("\n");
-            }
             return copiedArray2;
         }
 
@@ -169,6 +155,19 @@ namespace MatrixCalculationProgram
             }
             Console.WriteLine("Test Passed: The arrays were equal.");
             Console.Write("\n");
+        }
+
+        private static void PrintArray(int[,] array)
+        {
+            //prints the array 
+            for (int i = 0; i < numRows; i++)
+            {
+                for (int j = 0; j < numCols; j++)
+                {
+                    Console.Write(string.Format("{0} ", array[i, j]));
+                }
+                Console.Write("\n");
+            }
         }
 
     }
