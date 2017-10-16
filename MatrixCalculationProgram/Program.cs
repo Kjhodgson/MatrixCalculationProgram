@@ -32,13 +32,13 @@ namespace MatrixCalculationProgram
                     array[i, j] = rand.Next(1, 3);
                 }
             }
-            PrintArray(array);
+            //PrintArray(array);
             
             Console.WriteLine("\nNow running the matrix calculation without parallelism....");
             sw.Start();
             copiedArray1 = (int[,])MatrixCalculationProgram(array, copiedArray1).Clone();
             sw.Stop();
-            PrintArray(copiedArray1);
+            //PrintArray(copiedArray1);
             Console.WriteLine("\nThe calculation took {0} (ms)", sw.ElapsedMilliseconds);
             decimal timeSeconds = decimal.Divide((decimal)sw.ElapsedMilliseconds, (decimal)1000);
             Console.WriteLine("Time in seconds: {0}", timeSeconds);
@@ -47,7 +47,7 @@ namespace MatrixCalculationProgram
             sw.Start();
             copiedArray2 = (int[,])MatrixCalculationParallelProgram(array,copiedArray2).Clone();
             sw.Stop();
-            PrintArray(copiedArray2);
+            //PrintArray(copiedArray2);
             Console.WriteLine("\nThe calculation took {0} (ms)", sw.ElapsedMilliseconds);
             timeSeconds = decimal.Divide((decimal)sw.ElapsedMilliseconds, (decimal)1000);
             Console.WriteLine("Time in seconds: {0}", timeSeconds);
